@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerario Europa - Septiembre 2025</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Calendar, MapPin, Clock, Bus, Train, Plane, Camera, ExternalLink, ChevronDown, ChevronUp, Navigation, Star, Info } = lucide;
+
+        const EuropaItineraryApp = () => {
+          const [selectedDay, setSelectedDay] = useState(0);
+          const [expandedActivities, setExpandedActivities] = useState({});
+          const [currentTime, setCurrentTime] = useState(new Date());
+
+          useEffect(() => {
+            const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+            return () => clearInterval(timer);
+          }, []);
+
+          const toggleActivity = (dayIndex, activityIndex) => {
+            const key = `${dayIndex}-${activityIndex}`;
+            setExpandedActivities(prev => ({
+              ...prev,
+              [key]: !prev[key]
+            }));
+          };
+
+          const itinerary = [
+            {
+              date: "Dom 7 Sep",
+              city: "Barcelona",
+              icon: React.createElement(Plane, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-red-500 to-yellow-500",
+              activities: [
+                {
+                  time: "17:10",
+                  title: "Llegada a Barcelona",
+                  description: "Aeropuerto BCN",
+                  transport: "Aerobús A1/A2 → Plaça Catalunya; Metro L1 → Fabra i Puig",
+                  hotel: "Ibis Meridiana",
+                  type: "arrival"
+                },
+                {
+                  time: "19:30-22:00",
+                  title: "Paseo nocturno",
+                  description: "Ramblas - Boqueria - Barrio Gótico",
+                  notes: "Cena opcional",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "Barcelona Bus Turístic", url: "https://www.barcelonabusturistic.cat/en" },
+                { name: "City Tour Routes", url: "https://barcelona.city-tour.com/en/routes" }
+              ]
+            },
+            {
+              date: "Lun 8 Sep",
+              city: "Barcelona",
+              subtitle: "(Yrneth libre)",
+              icon: React.createElement(Camera, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-blue-500 to-purple-500",
+              activities: [
+                {
+                  time: "09:30-12:00",
+                  title: "Sagrada Família",
+                  description: "Metro L5 Virrei Amat → Sagrada Família (12 min)",
+                  type: "attraction"
+                },
+                {
+                  time: "12:15-13:30",
+                  title: "Av. Gaudí y Sant Pau",
+                  description: "Visita exterior",
+                  type: "activity"
+                },
+                {
+                  time: "14:30-16:30",
+                  title: "Barrio Gótico",
+                  description: "Catedral, Plaça del Rei, Call",
+                  type: "attraction"
+                },
+                {
+                  time: "16:45-18:30",
+                  title: "Boqueria y Ramblas",
+                  description: "Regreso L3→L5",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "Sagrada Família Tickets", url: "https://sagradafamilia.org/en/tickets" },
+                { name: "Barcelona Bus Turístic", url: "https://www.barcelonabusturistic.cat/en" }
+              ]
+            },
+            {
+              date: "Mar 9 Sep",
+              city: "Barcelona",
+              subtitle: "(Yrneth libre)",
+              icon: React.createElement(MapPin, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-green-500 to-blue-500",
+              activities: [
+                {
+                  time: "09:00-11:00",
+                  title: "Park Güell",
+                  description: "L3 Lesseps + bus 116/caminata",
+                  type: "attraction"
+                },
+                {
+                  time: "11:15-13:00",
+                  title: "Passeig de Gràcia",
+                  description: "Casa Batlló & La Pedrera",
+                  type: "attraction"
+                },
+                {
+                  time: "14:00-17:00",
+                  title: "MNAC & Montjuïc",
+                  description: "Bus/metro",
+                  type: "museum"
+                }
+              ],
+              tours: [
+                { name: "Park Güell Tickets", url: "https://parkguell.barcelona/en/buy-tickets" },
+                { name: "Barcelona Bus Turístic", url: "https://www.barcelonabusturistic.cat/en" }
+              ]
+            },
+            {
+              date: "Mié 10 Sep",
+              city: "Barcelona",
+              subtitle: "(Yrneth libre)",
+              icon: React.createElement(Camera, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-purple-500 to-pink-500",
+              activities: [
+                {
+                  time: "09:00-11:00",
+                  title: "Museu Picasso",
+                  type: "museum"
+                },
+                {
+                  time: "11:15-13:30",
+                  title: "Parc de la Ciutadella & Arc de Triomf",
+                  type: "activity"
+                },
+                {
+                  time: "14:30-16:30",
+                  title: "Barceloneta & Port Olímpic",
+                  type: "activity"
+                },
+                {
+                  time: "17:00-19:00",
+                  title: "El Born y Santa María del Mar",
+                  type: "attraction"
+                }
+              ],
+              tours: [
+                { name: "Barcelona Bus Turístic", url: "https://www.barcelonabusturistic.cat/en" }
+              ]
+            },
+            {
+              date: "Jue 11 Sep",
+              city: "Barcelona → Roma",
+              icon: React.createElement(Bus, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-orange-500 to-red-500",
+              activities: [
+                {
+                  time: "Mañana",
+                  title: "Tiempo libre",
+                  description: "Gótico/Catedral",
+                  type: "activity"
+                },
+                {
+                  time: "13:30",
+                  title: "Traslado Estación",
+                  description: "BCN Nord (L1 a Arc de Triomf + 8 min a pie)",
+                  type: "transport"
+                },
+                {
+                  time: "15:05",
+                  title: "Salida a Roma",
+                  description: "Noche en ruta",
+                  type: "transport"
+                }
+              ]
+            },
+            {
+              date: "Vie 12 Sep",
+              city: "Roma",
+              subtitle: "(llegada 18:00)",
+              icon: React.createElement(MapPin, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-red-600 to-yellow-600",
+              activities: [
+                {
+                  time: "18:00",
+                  title: "Check-in",
+                  description: "Marta Guest House (Prati)",
+                  type: "hotel"
+                },
+                {
+                  time: "19:30-22:00",
+                  title: "Paseo nocturno",
+                  description: "Castel Sant'Angelo → Piazza Navona → Pantheon (exterior)",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "Big Bus Rome", url: "https://www.bigbustours.com/en/rome/rome-routes-and-tour-maps" }
+              ]
+            },
+            {
+              date: "Sáb 13 Sep",
+              city: "Roma",
+              icon: React.createElement(Camera, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-red-500 to-orange-500",
+              activities: [
+                {
+                  time: "09:00-12:30",
+                  title: "Coliseo",
+                  description: "Metro A Lepanto → Termini; B a Colosseo",
+                  type: "attraction"
+                },
+                {
+                  time: "13:00-16:00",
+                  title: "Foro & Palatino",
+                  type: "attraction"
+                },
+                {
+                  time: "Tarde",
+                  title: "Santa Maria Maggiore o Trastevere",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "Coliseo/Foro/Palatino Tickets", url: "https://www.coopculture.it/en/tickets/" },
+                { name: "Big Bus Rome Red Route", url: "https://www.bigbustours.com/en/rome/rome-routes-and-tour-maps" }
+              ]
+            },
+            {
+              date: "Dom 14 Sep",
+              city: "Roma",
+              subtitle: "(Ángelus)",
+              icon: React.createElement(Star, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-yellow-500 to-orange-500",
+              activities: [
+                {
+                  time: "07:00-09:00",
+                  title: "Basílica de San Pedro",
+                  description: "Entrada libre",
+                  type: "attraction"
+                },
+                {
+                  time: "12:00",
+                  title: "Ángelus del Papa",
+                  description: "Plaza de San Pedro (llegar 11:00)",
+                  type: "special"
+                },
+                {
+                  time: "Tarde",
+                  title: "Ruta de iglesias",
+                  description: "San Luigi dei Francesi, SM della Vittoria, Minerva, Laterano",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "Museos Vaticanos", url: "https://www.museivaticani.va/content/museivaticani/en/organizza-visita/tariffe-e-biglietti.html" },
+                { name: "Big Bus Rome", url: "https://www.bigbustours.com/en/rome/rome-routes-and-tour-maps" }
+              ]
+            },
+            {
+              date: "Lun 15 Sep",
+              city: "Roma",
+              icon: React.createElement(Camera, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-purple-500 to-red-500",
+              activities: [
+                {
+                  time: "09:00-13:00",
+                  title: "Museos Vaticanos + Capilla Sixtina",
+                  description: "Entrada cronometrada",
+                  type: "museum"
+                },
+                {
+                  time: "Tarde",
+                  title: "Cúpula de San Pedro o mirador Pincio",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "Museos Vaticanos Tickets", url: "https://www.museivaticani.va/content/museivaticani/en/organizza-visita/tariffe-e-biglietti.html" }
+              ]
+            },
+            {
+              date: "Mar 16 Sep",
+              city: "Roma → Venecia",
+              icon: React.createElement(Train, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-blue-600 to-cyan-500",
+              activities: [
+                {
+                  time: "Día",
+                  title: "Llegada Mestre",
+                  description: "Check-in Smart Hotel Holiday",
+                  type: "hotel"
+                },
+                {
+                  time: "18:00-22:00",
+                  title: "Primera noche en Venecia",
+                  description: "Piazzale Roma → Rialto → San Marcos",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "ACTV Vaporetto", url: "https://actv.avmspa.it/en/content/vaporetto" },
+                { name: "Vaporetto Timetables", url: "https://avm.avmspa.it/en/content/water-bus-service-timetable-0" },
+                { name: "Hop-On Hop-Off Eco-Boat", url: "https://www.hop-on-hop-off-tickets.com/venice-boat-tours/" }
+              ]
+            },
+            {
+              date: "Mié 17 Sep",
+              city: "Venecia → París",
+              icon: React.createElement(Bus, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-cyan-500 to-blue-600",
+              activities: [
+                {
+                  time: "08:30-12:30",
+                  title: "Basílica de San Marco + Palacio Ducal",
+                  description: "Reserva recomendada",
+                  type: "attraction"
+                },
+                {
+                  time: "14:00-17:00",
+                  title: "Vaporetto Línea 1",
+                  description: "Recorrido por Gran Canal",
+                  type: "activity"
+                },
+                {
+                  time: "Tarde",
+                  title: "Salida a París",
+                  description: "Según boarding pass",
+                  type: "transport"
+                }
+              ],
+              tours: [
+                { name: "ACTV Vaporetto Info", url: "https://actv.avmspa.it/en/content/vaporetto" },
+                { name: "Hop-On Hop-Off Eco-Boat", url: "https://www.hop-on-hop-off-tickets.com/venice-boat-tours/" }
+              ]
+            },
+            {
+              date: "Jue 18 Sep",
+              city: "París",
+              subtitle: "(Montmartre)",
+              icon: React.createElement(MapPin, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-pink-500 to-purple-500",
+              activities: [
+                {
+                  time: "Día",
+                  title: "Check-in",
+                  description: "ibis budget Porte de Montmartre",
+                  type: "hotel"
+                },
+                {
+                  time: "16:00-20:00",
+                  title: "Montmartre & Sacré-Cœur",
+                  description: "Entrada gratis",
+                  type: "attraction"
+                }
+              ],
+              tours: [
+                { name: "Big Bus Paris", url: "https://www.bigbustours.com/en/paris/paris-bus-tours" }
+              ]
+            },
+            {
+              date: "Vie 19 Sep",
+              city: "París",
+              icon: React.createElement(Camera, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-blue-500 to-pink-500",
+              activities: [
+                {
+                  time: "09:00-12:30",
+                  title: "Louvre",
+                  description: "Entrada cronometrada",
+                  type: "museum"
+                },
+                {
+                  time: "16:00-17:30",
+                  title: "Crucero por el Sena",
+                  description: "Bateaux Mouches",
+                  type: "activity"
+                },
+                {
+                  time: "18:30-19:30",
+                  title: "Notre-Dame",
+                  description: "Entrada gratuita con reserva",
+                  type: "attraction"
+                }
+              ],
+              tours: [
+                { name: "Louvre Tickets", url: "https://ticket.louvre.fr/" },
+                { name: "Bateaux Mouches", url: "https://www.bateaux-mouches.fr/en" },
+                { name: "Notre-Dame Official", url: "https://www.notredamedeparis.fr/en/" },
+                { name: "Notre-Dame Reservations", url: "https://resa.notredamedeparis.fr/" }
+              ]
+            },
+            {
+              date: "Sáb 20 Sep",
+              city: "París",
+              icon: React.createElement(Star, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-purple-500 to-pink-500",
+              activities: [
+                {
+                  time: "10:00-13:00",
+                  title: "Musée de l'Armée",
+                  description: "Invalides",
+                  type: "museum"
+                },
+                {
+                  time: "16:00-18:30",
+                  title: "Torre Eiffel",
+                  description: "Entrada cronometrada",
+                  type: "attraction"
+                },
+                {
+                  time: "Noche",
+                  title: "Trocadéro o Rue Cler",
+                  type: "activity"
+                }
+              ],
+              tours: [
+                { name: "Musée de l'Armée", url: "https://www.musee-armee.fr/en/your-visit/ticket-office.html" },
+                { name: "Torre Eiffel Official", url: "https://www.toureiffel.paris/en" },
+                { name: "Big Bus Paris", url: "https://www.bigbustours.com/en/paris/paris-bus-tours" }
+              ]
+            },
+            {
+              date: "Dom 21 Sep",
+              city: "Salida",
+              icon: React.createElement(Plane, { className: "w-5 h-5" }),
+              color: "bg-gradient-to-r from-gray-500 to-blue-500",
+              activities: [
+                {
+                  time: "Según vuelo",
+                  title: "Traslado al aeropuerto",
+                  type: "transport"
+                }
+              ]
+            }
+          ];
+
+          const getActivityIcon = (type) => {
+            switch (type) {
+              case 'arrival':
+              case 'transport':
+                return React.createElement(Navigation, { className: "w-4 h-4" });
+              case 'attraction':
+                return React.createElement(MapPin, { className: "w-4 h-4" });
+              case 'museum':
+                return React.createElement(Camera, { className: "w-4 h-4" });
+              case 'hotel':
+                return React.createElement(MapPin, { className: "w-4 h-4" });
+              case 'special':
+                return React.createElement(Star, { className: "w-4 h-4" });
+              default:
+                return React.createElement(Clock, { className: "w-4 h-4" });
+            }
+          };
+
+          return React.createElement("div", { className: "min-h-screen bg-gray-50" },
+            React.createElement("div", { className: "bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 sticky top-0 z-50 shadow-lg" },
+              React.createElement("h1", { className: "text-2xl font-bold flex items-center gap-2" },
+                React.createElement(Calendar, { className: "w-6 h-6" }),
+                "Europa Sep 2025"
+              ),
+              React.createElement("p", { className: "text-blue-100" }, "Barcelona • Roma • Venecia • París")
+            ),
+            React.createElement("div", { className: "bg-white shadow-sm sticky top-16 z-40" },
+              React.createElement("div", { className: "overflow-x-auto" },
+                React.createElement("div", { className: "flex gap-2 p-3 min-w-max" },
+                  itinerary.map((day, index) =>
+                    React.createElement("button", {
+                      key: index,
+                      onClick: () => setSelectedDay(index),
+                      className: `px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                        selectedDay === index
+                          ? 'bg-blue-500 text-white shadow-lg'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`
+                    }, day.date)
+                  )
+                )
+              )
+            ),
+            React.createElement("div", { className: "p-4" },
+              itinerary[selectedDay] && React.createElement("div", { className: "max-w-4xl mx-auto" },
+                React.createElement("div", { className: `${itinerary[selectedDay].color} rounded-2xl p-6 text-white mb-6 shadow-xl` },
+                  React.createElement("div", { className: "flex items-center gap-3 mb-2" },
+                    itinerary[selectedDay].icon,
+                    React.createElement("h2", { className: "text-2xl font-bold" }, itinerary[selectedDay].date)
+                  ),
+                  React.createElement("h3", { className: "text-xl opacity-90" }, itinerary[selectedDay].city),
+                  itinerary[selectedDay].subtitle && React.createElement("p", { className: "text-sm opacity-75 mt-1" }, itinerary[selectedDay].subtitle)
+                ),
+                React.createElement("div", { className: "space-y-4 mb-6" },
+                  itinerary[selectedDay].activities.map((activity, actIndex) =>
+                    React.createElement("div", { key: actIndex, className: "bg-white rounded-xl shadow-md overflow-hidden" },
+                      React.createElement("div", {
+                        className: "p-4 cursor-pointer hover:bg-gray-50 transition-colors",
+                        onClick: () => toggleActivity(selectedDay, actIndex)
+                      },
+                        React.createElement("div", { className: "flex items-center justify-between" },
+                          React.createElement("div", { className: "flex items-center gap-3" },
+                            getActivityIcon(activity.type),
+                            React.createElement("div", null,
+                              React.createElement("h4", { className: "font-semibold text-gray-900" }, activity.title),
+                              React.createElement("p", { className: "text-sm text-gray-600" }, activity.time)
+                            )
+                          ),
+                          (activity.description || activity.transport || activity.notes) && (
+                            expandedActivities[`${selectedDay}-${actIndex}`] ? 
+                              React.createElement(ChevronUp, { className: "w-5 h-5 text-gray-400" }) :
+                              React.createElement(ChevronDown, { className: "w-5 h-5 text-gray-400" })
+                          )
+                        ),
+                        expandedActivities[`${selectedDay}-${actIndex}`] && React.createElement("div", { className: "mt-4 pt-4 border-t border-gray-200" },
+                          activity.description && React.createElement("p", { className: "text-gray-700 mb-2" }, activity.description),
+                          activity.transport && React.createElement("div", { className: "bg-blue-50 p-3 rounded-lg mb-2" },
+                            React.createElement("div", { className: "flex items-center gap-2 text-blue-700" },
+                              React.createElement(Navigation, { className: "w-4 h-4" }),
+                              React.createElement("span", { className: "text-sm font-medium" }, "Transporte:")
+                            ),
+                            React.createElement("p", { className: "text-sm text-blue-600 mt-1" }, activity.transport)
+                          ),
+                          activity.hotel && React.createElement("div", { className: "bg-green-50 p-3 rounded-lg mb-2" },
+                            React.createElement("div", { className: "flex items-center gap-2 text-green-700" },
+                              React.createElement(MapPin, { className: "w-4 h-4" }),
+                              React.createElement("span", { className: "text-sm font-medium" }, "Hotel:")
+                            ),
+                            React.createElement("p", { className: "text-sm text-green-600 mt-1" }, activity.hotel)
+                          ),
+                          activity.notes && React.createElement("div", { className: "bg-yellow-50 p-3 rounded-lg" },
+                            React.createElement("div", { className: "flex items-center gap-2 text-yellow-700" },
+                              React.createElement(Info, { className: "w-4 h-4" }),
+                              React.createElement("span", { className: "text-sm font-medium" }, "Nota:")
+                            ),
+                            React.createElement("p", { className: "text-sm text-yellow-600 mt-1" }, activity.notes)
+                          )
+                        )
+                      )
+                    )
+                  )
+                ),
+                itinerary[selectedDay].tours && itinerary[selectedDay].tours.length > 0 && React.createElement("div", { className: "bg-white rounded-xl shadow-md p-6" },
+                  React.createElement("h4", { className: "font-bold text-gray-900 mb-4 flex items-center gap-2" },
+                    React.createElement(ExternalLink, { className: "w-5 h-5" }),
+                    "Tours & Enlaces Útiles"
+                  ),
+                  React.createElement("div", { className: "space-y-3" },
+                    itinerary[selectedDay].tours.map((tour, tourIndex) =>
+                      React.createElement("a", {
+                        key: tourIndex,
+                        href: tour.url,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        className: "flex items-center justify-between p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                      },
+                        React.createElement("span", { className: "text-blue-700 font-medium" }, tour.name),
+                        React.createElement(ExternalLink, { className: "w-4 h-4 text-blue-500" })
+                      )
+                    )
+                  )
+                ),
+                React.createElement("div", { className: "mt-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6" },
+                  React.createElement("h4", { className: "font-bold text-gray-900 mb-3 flex items-center gap-2" },
+                    React.createElement(Info, { className: "w-5 h-5 text-green-600" }),
+                    "Consejos del Día"
+                  ),
+                  React.createElement("div", { className: "text-sm text-gray-700 space-y-2" },
+                    React.createElement("p", null, "• Prioriza horarios de apertura (09:00) y transporte público económico"),
+                    React.createElement("p", null, "• Los enlaces marcados como \"oficial\" llevan directo a taquillas sin intermediarios"),
+                    React.createElement("p", null, "• Reserva entradas cronometradas con anticipación para museos principales")
+                  )
+                )
+              )
+            )
+          );
+        };
+
+        ReactDOM.render(React.createElement(EuropaItineraryApp), document.getElementById('root'));
+    </script>
+</body>
+</html>
